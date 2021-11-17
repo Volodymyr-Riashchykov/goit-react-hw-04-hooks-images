@@ -7,6 +7,6 @@ export default async function Api(name,page) {
     try {
         return  await (await axios.get(`${baseUrl}?image_type=photo&orientation=horizontal&q=${name}&page=${page}&per_page=12&key=${apiKey}`)).data.hits;
     } catch (error) {
-        //
+        console.log('error')
         }
 }

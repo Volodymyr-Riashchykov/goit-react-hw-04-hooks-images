@@ -1,30 +1,31 @@
-import React, { Component } from "react"
+import React, { useState } from "react"
 import s from "./Form.module.css"
 import Button from "../Button/Button"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default class Form extends Component {
-    state = {
-        searh: "",
-        error: null,
-    }
-    handleSearh = e => {
+export default function Form({ searh }) {
+    const [error, setError] = useState(null);
+    const [searhs, setSearhs] = useState('');
+    
+    const handleSearh = e => {
         e.preventDefault();
-        if (this.state.searh.trim() === "") {
-            this.setState({error: toast.error("Пустая строка"),})
+        if (searhs.trim() === "") {
+            setError(toast.error("Пустая строка"))
             return
         }
-        this.props.searh(this.state.searh)
-        this.setState({searh:""})
+        searh(searhs);
+        setSearhs("");
+        if(error) {setError(null);}
     }
-    handleSearhReq = e => {
-        this.setState({searh: e.currentTarget.value.toLowerCase()})
+
+    const handleSearhReq = e => {
+        setSearhs( e.currentTarget.value.toLowerCase())
     }
-    render() {
+    
         return (
             <header className={s.header}>
-                < form onSubmit = { this.handleSearh } className={s.form}>
+                < form onSubmit = { handleSearh } className={s.form}>
                     <Button />
                     
                     <label className={s.label}>
@@ -32,12 +33,12 @@ export default class Form extends Component {
                             className={s.input}
                             type = "text"
                             placeholder="Search images and photos"
-                            value = {this.state.searh}
-                            onChange = {this.handleSearhReq}
+                            value = {searhs}
+                            onChange = {handleSearhReq}
                         />
                     </label>
                      <ToastContainer />
                 </form>
             </header>
         )
-    }}
+    }
